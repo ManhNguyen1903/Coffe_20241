@@ -97,16 +97,11 @@ export const categories = [
     { id: 54, name: "Bàn 1", status: "empty" },
   ];
   export const productsData = [
-    { id: 1, name: "Trà đào cam xả", quantity: 1, price: 50000 },
-    { id: 2, name: "Trà xanh kem cheese", quantity: 1, price: 50000 },
-    { id: 3, name: "Trà sữa trân châu", quantity: 1, price: 50000 },
-    { id: 4, name: "Trà đào bốn mùa", quantity: 1, price: 50000 },
-    { id: 5, name: "Nước ép dứa", quantity: 1, price: 50000 },
-    { id: 6, name: "Trà đào bốn mùa", quantity: 1, price: 50000 },
-    { id: 7, name: "Nước ép dứa", quantity: 1, price: 50000 },
-    { id: 8, name: "Trà đào bốn mùa", quantity: 1, price: 50000 },
-    { id: 9, name: "Nước ép dứa", quantity: 1, price: 50000 },
+    { id: 1, name: "Trà đào cam xả", quantity: 1, price: 50000, tableId: 1 },
+    { id: 2, name: "Trà xanh kem cheese", quantity: 1, price: 50000, tableId: 1 },
+    { id: 3, name: "Trà sữa trân châu", quantity: 1, price: 50000, tableId: 2 },
   ];
+  
 
 // Dữ liệu danh sách bàn
 // export const tableData = [

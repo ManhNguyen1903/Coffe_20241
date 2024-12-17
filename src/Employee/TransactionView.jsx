@@ -1,16 +1,20 @@
 import React from "react";
-import PopUpBill from "./PopupBill";
-import "./TransactionView.css"; // Create and style this as needed
+import PopUpBill from "./PopUpBill";
+import "./TransactionView.css";
 
 function TransactionView({
+  selectedTableId,
+  tableData,
   products,
   increaseQuantity,
   decreaseQuantity,
   totalAmount,
   showBillPopup,
   setShowBillPopup,
+  handlePayment, // Thêm hàm handlePayment
 }) {
-  
+  // Lấy thông tin bàn hiện tại
+  const table = tableData.find((t) => t.id === selectedTableId);
 
   return (
     <div className="transaction">
@@ -56,13 +60,18 @@ function TransactionView({
 
       <div className="transaction-summary">
         <div className="notes">
-          <div>Bàn 3</div>
+          <div>{table ? table.name : "Chưa chọn bàn"}</div>
         </div>
         <div className="total">
           Tổng tiền: {totalAmount.toLocaleString("vi-VN")}₫
         </div>
       </div>
-      <button className="checkout-btn" onClick={() => setShowBillPopup(true)}>
+      <button
+        className="checkout-btn"
+        onClick={() => {
+          setShowBillPopup(true); // Hiển thị pop-up hóa đơn
+        }}
+      >
         Thanh toán
       </button>
 
@@ -71,6 +80,7 @@ function TransactionView({
         products={products}
         totalAmount={totalAmount}
         onClose={() => setShowBillPopup(false)}
+        handlePayment={handlePayment}
       />
     </div>
   );

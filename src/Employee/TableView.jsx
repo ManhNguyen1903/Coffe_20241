@@ -1,7 +1,25 @@
 import React from "react";
-import "./TableView.css"; // Create and style this as needed
+import "./TableView.css";
 
-function TableView({ filteredTables, selectedFilter, setSelectedFilter }) {
+function TableView({ tables, onTableSelect, setTables, selectedFilter, setSelectedFilter }) {
+  // Lọc bàn theo trạng thái được chọn
+  const filteredTables = tables.filter((table) =>
+    selectedFilter === "all"
+      ? true
+      : selectedFilter === "empty"
+      ? table.status === "empty"
+      : table.status === "occupied"
+  );
+
+  // Xử lý khi chọn bàn
+  const handleTableClick = (id) => {
+    setTables((prevTables) =>
+      prevTables.map((table) =>
+        table.id === id ? { ...table, status: "occupied" } : table
+      )
+    );
+  };
+
   return (
     <div className="view-table">
       {/* Filter Options */}
@@ -32,6 +50,10 @@ function TableView({ filteredTables, selectedFilter, setSelectedFilter }) {
           <div
             key={table.id}
             className={`table-item ${table.status === "occupied" ? "occupied" : ""}`}
+            onClick={() => {
+              onTableSelect(table.id); // Gọi hàm khi chọn bàn
+              handleTableClick(table.id); // Cập nhật trạng thái của bàn
+            }}
           >
             {table.name}
           </div>
