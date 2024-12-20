@@ -14,6 +14,40 @@ function Employee() {
   const [showBillPopup, setShowBillPopup] = useState(false);
   const [tableList, setTableList] = useState(tables); // Đảm bảo bạn quản lý danh sách bàn ở đây
 
+  const handleAddProduct = (product) => {
+    if (!selectedTableId) {
+      alert("Vui lòng chọn bàn trước khi thêm món!");
+      return;
+    }
+  
+    const confirmed = window.confirm(
+      `Bạn có chắc chắn muốn thêm món "${product.name}" vào bàn ${selectedTableId}?`
+    );
+  
+    if (confirmed) {
+      setProducts((prevProducts) => {
+        const existingProduct = prevProducts.find(
+          (p) => p.id === product.id && p.tableId === selectedTableId
+        );
+  
+        if (existingProduct) {
+          // Tăng số lượng nếu sản phẩm đã tồn tại
+          return prevProducts.map((p) =>
+            p.id === product.id && p.tableId === selectedTableId
+              ? { ...p, quantity: p.quantity + 1 }
+              : p
+          );
+        } else {
+          // Thêm sản phẩm mới vào danh sách
+          return [
+            ...prevProducts,
+            { ...product, tableId: selectedTableId, quantity: 1 },
+          ];
+        }
+      });
+    }
+  };
+  
   // Cập nhật trạng thái của bàn khi thanh toán
   const handlePayment = () => {
     // Đóng pop-up hóa đơn
@@ -52,13 +86,22 @@ function Employee() {
   // Giảm số lượng sản phẩm
   const decreaseQuantity = (id) => {
     setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === id && product.quantity > 0
-          ? { ...product, quantity: product.quantity - 1 }
-          : product
-      )
+      prevProducts.map((product) => {
+        if (product.id === id && product.quantity > 0) {
+          const updatedProduct = { ...product, quantity: product.quantity - 1 };
+  
+          // Nếu số lượng giảm về 0, xóa sản phẩm khỏi danh sách
+          if (updatedProduct.quantity === 0) {
+            return null; // Trả về null, để loại bỏ sản phẩm này
+          }
+  
+          return updatedProduct;
+        }
+        return product;
+      }).filter((product) => product !== null) // Loại bỏ các sản phẩm null
     );
   };
+  
 
   // Tính tổng số tiền cho bàn hiện tại
   const tableProducts = products.filter(
@@ -87,7 +130,7 @@ function Employee() {
             />
           )}
 
-          {currentView === "thucdon" && <MenuView products={products} />}
+          {currentView === "thucdon" && <MenuView onAddProduct={handleAddProduct} />}
         </div>
 
         <div className="content-right">
