@@ -7,6 +7,10 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddProductPopup from "./AddProductPopUp";
 import ProductDetailPopup from "./ProductDetailPopup.jsx"; // Import popup chi tiết sản phẩm
 import CategoryManagement from "./Category.jsx"
+import TableAdminView from "./TableAdminView";
+import AddTablePopup from "./AddTablePopup";
+import EditTablePopup from "./EditTablePopup";
+
 
 function Admin() {
   const [activeMenu, setActiveMenu] = useState("Quản lý sản phẩm");
@@ -46,7 +50,31 @@ function Admin() {
     );
     setSelectedProduct(null); // Đóng popup sau khi xóa
   };
-      
+    
+  const [tables, setTables] = useState([
+    { id: 1, name: "Bàn 1", status: "empty" },
+    { id: 2, name: "Bàn 2", status: "occupied" },
+  ]);
+  const [selectedTable, setSelectedTable] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("all");
+
+  const handleAddTable = (newTable) => {
+    setTables((prevTables) => [...prevTables, newTable]);
+  };
+
+  const handleEditTable = (updatedTable) => {
+    setTables((prevTables) =>
+      prevTables.map((table) =>
+        table.id === updatedTable.id ? updatedTable : table
+      )
+    );
+  };
+
+  const handleDeleteTable = (id) => {
+    setTables((prevTables) => prevTables.filter((table) => table.id !== id));
+    setSelectedTable(null);
+  };
   return (
     <div className="admin-container">
       {/* Navbar trên cùng */}
@@ -170,8 +198,35 @@ function Admin() {
 
           {activeMenu === "Quản lý bàn" && (
             <div>
-              <h2>Quản lý bàn</h2>
-              <p>Nội dung hiển thị quản lý bàn...</p>
+              <div className="navbar-table"> 
+                <h2>Quản lý bàn</h2>
+                <button
+                  className="add-table-icon"
+                  onClick={() => setIsAdding(true)}
+                >
+                  <FontAwesomeIcon icon={faPlus} size="2x" />
+                </button>
+                {isAdding && (
+                <AddTablePopup onClose={() => setIsAdding(false)} onAdd={handleAddTable} />
+              )}
+              </div>
+              <TableAdminView
+                tables={tables}
+                onTableSelect={setSelectedTable}
+                selectedFilter={selectedFilter}
+                setSelectedFilter={setSelectedFilter}
+              />
+              
+
+
+              {selectedTable && (
+                <EditTablePopup
+                  table={selectedTable}
+                  onClose={() => setSelectedTable(null)}
+                  onEdit={handleEditTable}
+                  onDelete={handleDeleteTable}
+                />
+              )}
             </div>
           )}
           {activeMenu === "Lịch sử giao dịch" && (

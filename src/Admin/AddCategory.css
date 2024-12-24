@@ -24,7 +24,7 @@
   
   .popup-add-category input,
   .popup-add-category textarea {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -33,11 +33,10 @@
   
   .popup-add-category .button-group {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 20px;
   }
   
-  .popup-add-category .close-button,
   .popup-add-category .save-button {
     padding: 10px 20px;
     border: none;
@@ -45,11 +44,17 @@
     cursor: pointer;
   }
   
-  .popup-add-category .close-button {
+  .navbar-addCategory .close-button {
     background-color: #f44336;
     color: white;
   }
-  
+
+  .navbar-addCategory{
+    display: flex;
+    justify-content: space-between;
+  }
+
+
   .popup-add-category .save-button {
     background-color: #4caf50;
     color: white;

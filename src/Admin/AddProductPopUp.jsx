@@ -52,16 +52,6 @@ const AddProductPopup = ({ isOpen, onClose, onUpdate }) => {
       ...productData,
       image,
     };
-
-    // Lấy dữ liệu hiện tại từ LocalStorage
-    const savedProducts = JSON.parse(localStorage.getItem("products")) || [];
-
-    // Thêm sản phẩm mới vào danh sách
-    const updatedProducts = [...savedProducts, newProduct];
-    
-    // Lưu lại danh sách sản phẩm vào LocalStorage
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-
     // Cập nhật danh sách sản phẩm cho Admin.js
     onUpdate(newProduct);
 
@@ -160,9 +150,7 @@ const AddProductPopup = ({ isOpen, onClose, onUpdate }) => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="close-button" onClick={onClose}>
-              Đóng
-            </button>
+          <button className="close-button" onClick={onClose}>&times;</button>
             <button type="submit" className="save-button">
               Lưu
             </button>

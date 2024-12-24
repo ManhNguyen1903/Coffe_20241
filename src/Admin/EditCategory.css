@@ -23,7 +23,7 @@
   }
   
   .popup-edit-category input {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -36,7 +36,11 @@
     margin-top: 20px;
   }
   
-  .popup-edit-category .close-button {
+  .navbar-editCategory{
+    display: flex;
+    justify-content: space-between;
+  }
+  .navbar-editCategory .close-button {
     background-color: #f44336;
     color: white;
     padding: 10px 20px;

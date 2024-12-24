@@ -25,7 +25,11 @@ const EditCategory = ({ isOpen, category, onClose, onUpdate, onDelete }) => {
   return (
     <div className="popup-overlay-category">
       <div className="popup-edit-category">
-        <h2>Chỉnh sửa danh mục</h2>
+        <div className="navbar-editCategory">          
+          <h2>Chỉnh sửa danh mục</h2>
+          <button className="close-button" onClick={onClose}>&times;</button>
+        </div>
+
         <div>
           <label>Tên danh mục:</label>
           <input
@@ -35,15 +39,13 @@ const EditCategory = ({ isOpen, category, onClose, onUpdate, onDelete }) => {
           />
         </div>
         <div className="button-group">
-          <button className="close-button" onClick={onClose}>
-            Đóng
+        <button className="delete-button" onClick={handleDelete}>
+            Xóa
           </button>
           <button className="save-button" onClick={handleUpdate}>
             Lưu
           </button>
-          <button className="delete-button" onClick={handleDelete}>
-            Xóa
-          </button>
+
         </div>
       </div>
     </div>

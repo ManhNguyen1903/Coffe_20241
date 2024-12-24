@@ -150,4 +150,10 @@
   .add-product-icon:hover {
     color: #0056b3; /* Màu icon khi hover */
   }
-  
+  .navbar-table{
+    display: flex;
+    justify-content: space-between
+  }
+  .add-table-icon{
+    border: none;
+  }

@@ -54,7 +54,11 @@ const AddCategory = ({ isOpen, onClose, onUpdate }) => {
   return (
     <div className="popup-overlay-category">
       <div className="popup-add-category">
-        <h2>Thêm danh mục</h2>
+        <div className="navbar-addCategory">
+          <h2>Thêm danh mục</h2>
+          <button className="close-button" onClick={onClose}>&times;</button>
+        </div>
+
         <form onSubmit={handleSubmit}>
           {successMessage && <div className="success-message">{successMessage}</div>}
 
@@ -80,9 +84,6 @@ const AddCategory = ({ isOpen, onClose, onUpdate }) => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="close-button" onClick={onClose}>
-              Đóng
-            </button>
             <button type="submit" className="save-button">
               Lưu
             </button>

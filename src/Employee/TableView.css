@@ -56,7 +56,6 @@
   }
   
   .table-item:hover {
-    transform: scale(1.1);
     background-color: #9a95e0;
   }
   
