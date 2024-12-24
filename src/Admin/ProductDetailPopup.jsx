@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./ProductDetailPopup.css";
 
-const ProductDetailPopup = ({ product, onClose, onUpdate }) => {
+const ProductDetailPopup = ({ product, onClose, onUpdate, onDelete }) => {
   const [editableProduct, setEditableProduct] = useState(null);
 
+  // Khởi tạo dữ liệu sản phẩm khi `product` thay đổi
   useEffect(() => {
     if (product) {
-      setEditableProduct({ ...product }); // Khởi tạo state cục bộ với dữ liệu sản phẩm
+      setEditableProduct({ ...product });
     }
   }, [product]);
 
+  // Nếu chưa có sản phẩm để chỉnh sửa, không hiển thị popup
   if (!editableProduct) return null;
 
+  // Xử lý khi người dùng thay đổi thông tin sản phẩm
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditableProduct((prevState) => ({
@@ -20,13 +23,16 @@ const ProductDetailPopup = ({ product, onClose, onUpdate }) => {
     }));
   };
 
+  // Lưu thay đổi sản phẩm
   const handleSave = () => {
-    onClose(); // Đóng popup sau khi lưu
+    onUpdate(editableProduct); // Gọi hàm `onUpdate` từ lớp cha với sản phẩm đã chỉnh sửa
+    onClose(); // Đóng popup
   };
 
+  // Xóa sản phẩm
   const handleDelete = () => {
-    onDelete(editableProduct.id); // Gọi hàm xóa và truyền id sản phẩm cần xóa
-    onClose(); // Đóng popup sau khi xóa
+    onDelete(editableProduct.id); // Gọi hàm `onDelete` từ lớp cha với ID sản phẩm
+    onClose(); // Đóng popup
   };
 
   return (
@@ -39,12 +45,14 @@ const ProductDetailPopup = ({ product, onClose, onUpdate }) => {
           </button>
         </div>
 
+        {/* Form chỉnh sửa sản phẩm */}
         <div>
           <label>Loại:</label>
           <input
             type="text"
             name="category"
             value={editableProduct.category}
+            onChange={handleChange}
           />
         </div>
 
@@ -61,7 +69,7 @@ const ProductDetailPopup = ({ product, onClose, onUpdate }) => {
         <div>
           <label>Giá:</label>
           <input
-            type="text"
+            type="number"
             name="price"
             value={editableProduct.price}
             onChange={handleChange}
@@ -96,14 +104,14 @@ const ProductDetailPopup = ({ product, onClose, onUpdate }) => {
           </div>
         </div>
 
+        {/* Nút hành động */}
         <div className="button-group">
           <button type="button" className="delete-button" onClick={handleDelete}>
             Xóa
           </button>
-          <button type="submit" className="save-button" onClick={handleSave} >
+          <button type="button" className="save-button" onClick={handleSave}>
             Lưu
           </button>
-
         </div>
       </div>
     </div>

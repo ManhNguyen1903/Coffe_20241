@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import "./Admin.css";
 import NavBarAdmin from "./NavBarAdmin";
-import { products } from "../Data";
+import { products as initialProducts } from "../Data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddProductPopup from "./AddProductPopUp";
 import ProductDetailPopup from "./ProductDetailPopup.jsx"; // Import popup chi tiết sản phẩm
+import CategoryManagement from "./Category.jsx"
 
 function Admin() {
   const [activeMenu, setActiveMenu] = useState("Quản lý sản phẩm");
   const [activeFilter, setActiveFilter] = useState("Tất cả");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); // Lưu sản phẩm được chọn
+  const [products, setProducts] = useState(initialProducts);
 
   // Lấy danh mục sản phẩm từ dữ liệu
   const categories = ["Tất cả", ...new Set(products.map((product) => product.category))];
@@ -22,16 +24,28 @@ function Admin() {
       ? products
       : products.filter((product) => product.category === activeFilter);
 
-  const handleUpdateProduct = (updatedProduct) => {
-    const updatedProducts = [...products, updatedProduct]; // Thêm sản phẩm mới vào danh sách
-    setProducts(updatedProducts); // Cập nhật lại state
-
-    // Lưu danh sách sản phẩm vào LocalStorage
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-
-    setSelectedProduct(null); // Đảm bảo đóng popup sau khi lưu
+  // Thêm sản phẩm mới
+  const handleAddProduct = (newProduct) => {
+    setProducts((prevProducts) => [...prevProducts, newProduct]);
   };
 
+  // Cập nhật sản phẩm
+  const handleUpdateProduct = (updatedProduct) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === updatedProduct.id ? updatedProduct : product
+      )
+    );
+    setSelectedProduct(null); // Đóng popup sau khi lưu
+  };
+
+  // Xóa sản phẩm
+  const handleDeleteProduct = (productId) => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== productId)
+    );
+    setSelectedProduct(null); // Đóng popup sau khi xóa
+  };
       
   return (
     <div className="admin-container">
@@ -49,6 +63,12 @@ function Admin() {
               Quản lý sản phẩm
             </button>
             <button
+              className={activeMenu === "Quản lý danh mục" ? "active" : ""}
+              onClick={() => setActiveMenu("Quản lý danh mục")}
+            >
+              Quản lý danh mục
+            </button>
+            <button
               className={activeMenu === "Quản lý nhân viên" ? "active" : ""}
               onClick={() => setActiveMenu("Quản lý nhân viên")}
             >
@@ -60,6 +80,7 @@ function Admin() {
             >
               Quản lý bàn
             </button>
+
             <button
               className={activeMenu === "Lịch sử giao dịch" ? "active" : ""}
               onClick={() => setActiveMenu("Lịch sử giao dịch")}
@@ -101,11 +122,11 @@ function Admin() {
                   <FontAwesomeIcon icon={faPlus} size="4x" />
                 </button>
 
-                {/* Giao diện thêm sản phẩm */}
+                {/* Popup thêm sản phẩm */}
                 <AddProductPopup
                   isOpen={isModalOpen}
                   onClose={() => setIsModalOpen(false)}
-                  onUpdate={handleUpdateProduct}
+                  onUpdate={handleAddProduct}
                 />
               </div>
 
@@ -115,9 +136,9 @@ function Admin() {
                   <div
                     key={product.id}
                     className="product-card"
-                    onClick={() => setSelectedProduct(product)} // Hiển thị chi tiết sản phẩm
+                    onClick={() => setSelectedProduct(product)} // Hiển thị popup chi tiết sản phẩm
                   >
-                    <div className="product-image">Ảnh sản phẩm</div>
+                    <img src={product.image} alt={product.name} />
                     <div className="product-info">
                       <p className="product-name">{product.name}</p>
                       <p className="product-price">{product.price} VNĐ</p>
@@ -132,12 +153,13 @@ function Admin() {
                   product={selectedProduct}
                   onClose={() => setSelectedProduct(null)}
                   onUpdate={handleUpdateProduct}
+                  onDelete={handleDeleteProduct} // Truyền hàm xóa
                 />
               )}
               
             </div>
           )}
-
+          {activeMenu === "Quản lý danh mục" && <CategoryManagement />}
           {/* Các menu khác */}
           {activeMenu === "Quản lý nhân viên" && (
             <div>
@@ -145,6 +167,7 @@ function Admin() {
               <p>Nội dung hiển thị quản lý nhân viên...</p>
             </div>
           )}
+
           {activeMenu === "Quản lý bàn" && (
             <div>
               <h2>Quản lý bàn</h2>
