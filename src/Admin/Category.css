@@ -6,7 +6,10 @@
   display: flex;
   justify-content: space-between
 }
-
+.navbar-addEmployee {
+  display: flex;
+  justify-content: space-between
+}
 .table-container {
   max-height: 520px; /* Chiều cao tối đa */
   overflow-y: auto; /* Thêm thanh cuộn dọc */
@@ -14,6 +17,12 @@
 }
 
 .add-category-icon {
+  background-color: transparent; /* Xóa màu nền */
+  border: none; /* Xóa viền */
+  cursor: pointer; /* Hiển thị con trỏ pointer khi hover */
+  outline: none; /* Tắt đường viền khi nhấn vào icon */
+}
+.add-employee-icon{
   background-color: transparent; /* Xóa màu nền */
   border: none; /* Xóa viền */
   cursor: pointer; /* Hiển thị con trỏ pointer khi hover */
